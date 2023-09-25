@@ -24,7 +24,7 @@ The Forgotten posseses the ability to shatter the minds of intruders, unleashing
 ## Zephyrius  
 
 The first guardian, known as Zephyrius, is a master of stealth and deception.  
-Cloaked in a shroud of impenetrable shadows, Zephyrus stok swiftly and silently, his blade infused with the essence of darkness itself.
+Cloaked in a shroud of impenetrable shadows, Zephyrus moves swiftly and silently, his blade infused with the essence of darkness itself.
 His presence alone instill terror, for none could anticipate his approach until it is too late.
 
 ## Morven the Wretched
