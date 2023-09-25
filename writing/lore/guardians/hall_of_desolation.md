@@ -1,5 +1,3 @@
-# Hall of desolation  
-
 ## Malachor the Cursed  
 
 The first guardian of the Hall of Desolation is known as the name of Malachor the Cursed, a towering figure clad in tattered armor.  
