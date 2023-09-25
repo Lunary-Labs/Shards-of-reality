@@ -148,7 +148,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 383936761}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.177, y: 0.386, z: 0}
+  m_LocalPosition: {x: 0.612, y: -0.219, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -169,10 +169,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   character: {fileID: 1095312237}
-  weapon: {fileID: 0}
-  projectilePrefab: {fileID: 0}
-  projectileSpeed: 5
-  test: 0.1
+  weapon: {fileID: 2063890756}
+  projectilePrefab: {fileID: 7019567644027743972, guid: e6c51ab4ab938424586a7fc53b6c9e26, type: 3}
+  projectileSpeed: 10
+  offset: 0.1
 --- !u!1 &578750599
 GameObject:
   m_ObjectHideFlags: 0
@@ -369,7 +369,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1095312234}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.6378638, y: 0.5763979, z: 0.0061609484}
+  m_LocalPosition: {x: -2.5, y: 0.9, z: 0.0061609484}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -389,10 +389,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fa652d2373ea494fb4ae053c58fcf15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attack_point: {fileID: 383936762}
-  projectile_prefab: {fileID: 7019567644027743972, guid: e6c51ab4ab938424586a7fc53b6c9e26, type: 3}
-  projectile_speed: 10
-  move_speed: 5
+  moveSpeed: 5
+  dashDistance: 0.1
+  dashAvailable: 1
+  isDashing: 0
+  dashDuration: 0.1
 --- !u!1 &2063890755
 GameObject:
   m_ObjectHideFlags: 0
@@ -402,7 +403,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2063890756}
-  - component: {fileID: 2063890758}
   - component: {fileID: 2063890759}
   m_Layer: 0
   m_Name: Square
@@ -419,30 +419,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2063890755}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.001, y: -0.577, z: -0.0061609484}
+  m_LocalPosition: {x: -0.412, y: 0, z: 0}
   m_LocalScale: {x: 0.44188896, y: 0.46012834, z: 2.5351472}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 383936762}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2063890758
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2063890755}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b00ba047717a994b8d9980193938c81, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  character: {fileID: 1095312237}
-  weapon: {fileID: 2063890756}
-  projectilePrefab: {fileID: 7019567644027743972, guid: e6c51ab4ab938424586a7fc53b6c9e26, type: 3}
-  projectileSpeed: 5
-  test: 0.1
 --- !u!212 &2063890759
 SpriteRenderer:
   m_ObjectHideFlags: 0
