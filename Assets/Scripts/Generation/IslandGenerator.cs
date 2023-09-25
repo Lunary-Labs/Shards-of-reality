@@ -4,26 +4,23 @@ using System.Linq;
 using UnityEngine;
 using UnityEditor;
 
-public class RandomGenerator : MonoBehaviour {
-  [SerializeField]
+public class IslandGenerator : MonoBehaviour {
   private Vector2Int startPosition = Vector2Int.zero;
-
   [SerializeField]
   private GameObject basicTile;
-
   [SerializeField]
-  private int iterations = 10;
-
+  private int iterations = 500;
   [SerializeField]
-  public int walkLenght = 10;
-
+  public int walkLenght = 20;
   [SerializeField]
   public bool startRandomly = true;
-
   [SerializeField]
   private Vector2 offset = new Vector2(0.5f, 0.25f);
 
   void Start() {
+    // Load prefab for testing
+    basicTile = (GameObject)Resources.Load("Prefabs/floor1");
+    
     createIsland();
   }
 
