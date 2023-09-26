@@ -5,18 +5,18 @@ There are 7 levels in total, each with a distinct theme and set of monsters.
 From the 1st to the 6th level, the difficulty increases gradually, with the 7th level being the most challenging.  
 
 Each of the first 6 levels must contain one of the following rooms:  
-- **Entrance**: The starting room of the level.  
-- **Treasure**: A room containing an ancient item.  
-- **Shop**: A room where player can exchange rare souls for items.  
-- **Absence of reality**: A room that can contain everything, from a treasure to a monster. Not accessible trough the regular path.  
-- **Guardian**: A room containing a powerful guardian.  
-- **Exit**: The path between levels.
+- **Entrance**: The starting room of the level.  1 by  level.  
+- **Treasure**: A room containing an ancient item.  1 by level.  
+- **Shop**: A room where player can exchange rare souls for items.  1 by level.  
+- **Absence of reality**: A room that can contain everything, from a treasure to a monster. Not accessible trough the regular path.  1 by level.  
+- **Guardian**: A room containing a powerful guardian and leading to the next level.  1 by level.  
 
 Additional rooms can appear:  
 - **Blessing Room**: Provide a challenge to the player, in case of victory, reward him with an item from the Blessing item pool.  
 - **Malediction Room**: Give the opportunity to get an item from Malediction pool and a malus for the player, can be refused.  
-- **Oblation Room**: An offering to gods has been rejected and left in this room, the player can took it without counterpart.  
-- **Panic Room**: Entrance look like a regular room, there are a lot of dangers in it and player need to survive waves/traps, no reward.  
+only one of the two rooms can appear in a level and not guaranteed on every level.   
+- **Oblation Room**: An offering to gods has been rejected and left in this room, the player can took it without counterpart.  really rare.  
+- **Panic Room**: Entrance look like a regular room, there are a lot of dangers in it and player need to survive waves/traps, no reward.  1 by level.
 
 The 7th level doesn't not contain treasure or shop rooms, it is a succession of hard rooms that contain powerfull enemies.  
 The final boss of the abyss is in a room that is always at the end of the level.  

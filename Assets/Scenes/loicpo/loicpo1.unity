@@ -270,9 +270,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6147b941f138634aa988354db8bf146, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  iterations: 3
-  walkLenght: 6
-  distanceBetweenIslands: 10
+  iterations: 4
+  walkLenght: 12
+  distanceBetweenIslands: 50
 --- !u!4 &1509629209
 Transform:
   m_ObjectHideFlags: 0

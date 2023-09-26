@@ -6,7 +6,7 @@ using UnityEditor;
 
 public class FloorGenerator : MonoBehaviour {
   private Vector2Int startPosition = Vector2Int.zero;
-  
+
   [SerializeField]
   private int iterations = 4;
 

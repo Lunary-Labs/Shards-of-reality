@@ -20,7 +20,6 @@ public class IslandGenerator : MonoBehaviour {
   void Start() {
     // Load prefab for testing
     basicTile = (GameObject)Resources.Load("Prefabs/floor1");
-    
     createIsland();
   }
 
@@ -36,7 +35,7 @@ public class IslandGenerator : MonoBehaviour {
     HashSet<Vector2Int> floorPositions = new HashSet<Vector2Int>();
     var currentPosition = startPosition;
 
-    for (int i = 0; i < iterations; i++) { 
+    for (int i = 0; i < iterations; i++) {
       HashSet<Vector2Int> path = new HashSet<Vector2Int>();
       path.Add(startPosition);
       var previousPosition = startPosition;
@@ -51,15 +50,14 @@ public class IslandGenerator : MonoBehaviour {
       }
     }
 
-    Vector2 size = new Vector2(floorPositions.Max(x => x.x) - floorPositions.Min(x => x.x) + 1, 
+    Vector2 size = new Vector2(floorPositions.Max(x => x.x) - floorPositions.Min(x => x.x) + 1,
       floorPositions.Max(x => x.y) - floorPositions.Min(x => x.y) + 1);
 
     foreach (var position in floorPositions) {
-      Debug.Log(position);
       var newTile = PrefabUtility.InstantiatePrefab(basicTile) as GameObject;
       newTile.transform.SetParent(transform);
       newTile.transform.localPosition = new Vector3((position[0] - position[1]) * offset.x,
-       -(position[0] + position[1]) * offset.y, 
+       -(position[0] + position[1]) * offset.y,
        -(position[0] + position[1]) / (size.x + size.y));
       newTile.name += " (" + position[0] + ", " + position[1] + ")";
     }
@@ -78,7 +76,7 @@ public static class Direction2D {
     new Vector2Int(1, 0),   // RIGHT
     new Vector2Int(0, -1),  // DOWN
     new Vector2Int(-1, 0)   // LEFT
-  }; 
+  };
 
   public static Vector2Int getRandomCardinalDirection() {
     return cardinalDirectionInt[Random.Range(0, cardinalDirectionInt.Count)];
