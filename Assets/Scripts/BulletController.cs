@@ -19,5 +19,17 @@ public class BulletController : MonoBehaviour{
                 Destroy(gameObject);
             }
         }
+
+        if (other.CompareTag("Player")){
+            // Get a script or component for handling the enemy's health.
+            Mag player = other.GetComponent<Mag>();
+
+            if (player != null){
+                if (player.canTakeDamage()){
+                    player.TakeDamage(damage);
+                    Destroy(gameObject);
+                }
+            }
+        }
     }
 }
