@@ -28,10 +28,10 @@ public class UiDisplay : MonoBehaviour
 
     void Update(){
         if(childFound && player != null){
-            healthText.text = "HP : " + player.getCurrentHealth().ToString();
+            healthText.text = "HP : " + player.GetCurrentHealth().ToString();
         }
         else if(childFound && enemy != null){
-            healthText.text = enemy.getCurrentHealth().ToString();
+            healthText.text = enemy.GetCurrentHealth().ToString();
         }
         
     }

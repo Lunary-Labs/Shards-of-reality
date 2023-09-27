@@ -25,7 +25,7 @@ public class BulletController : MonoBehaviour{
             Mag player = other.GetComponent<Mag>();
 
             if (player != null){
-                if (player.canTakeDamage()){
+                if (player.CanTakeDamage()){
                     player.TakeDamage(damage);
                     Destroy(gameObject);
                 }
