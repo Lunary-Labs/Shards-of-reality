@@ -63,23 +63,34 @@ public class FloorGenerator : MonoBehaviour {
     // Find special rooms possible positions.
     var oneNeighborPosition = new HashSet<Vector2Int>();
     var twoNeighborPosition = new HashSet<Vector2Int>();
+    var maxNeighborPosition = new Vector2Int();
+    int max = 0;
     foreach (var position in positions) {
       if (getNeighborsAmount(position, positions) == 1) {
         oneNeighborPosition.Add(position);
       } else if (getNeighborsAmount(position, positions) == 2) {
         twoNeighborPosition.Add(position);
       }
+      if (getNeighborsAmount(position, positions) > max) {
+        maxNeighborPosition = position;
+      }
     }
 
     // Place special rooms.
-    var treasureRoomPosition = oneNeighborPosition.ElementAt(Random.Range(0, oneNeighborPosition.Count));
-    oneNeighborPosition.Remove(treasureRoomPosition);
+    // TODO: Determine if theses random coordinates need to be removed from the global room positions list.
+    //       Will probably cause problems when linking rooms together.
+    var treasureRoomPosition = twoNeighborPosition.ElementAt(Random.Range(0, twoNeighborPosition.Count));
+    twoNeighborPosition.Remove(treasureRoomPosition);
+
+    // This room cause a bug if there are no one neighbor room.
+    // TODO: Find a way to fix this.
     var bossRoomPosition = oneNeighborPosition.ElementAt(Random.Range(0, oneNeighborPosition.Count));
     oneNeighborPosition.Remove(bossRoomPosition);
-    var shopRoomPosition = oneNeighborPosition.ElementAt(Random.Range(0, oneNeighborPosition.Count));
-    oneNeighborPosition.Remove(shopRoomPosition);
-    var spawnRoomPosition = twoNeighborPosition.ElementAt(Random.Range(0, twoNeighborPosition.Count));
-    twoNeighborPosition.Remove(spawnRoomPosition);
+
+    var shopRoomPosition = twoNeighborPosition.ElementAt(Random.Range(0, twoNeighborPosition.Count));
+    twoNeighborPosition.Remove(shopRoomPosition);
+
+    var spawnRoomPosition = maxNeighborPosition;
 
     // Instantiate islands.
     foreach (var position in positions) {
@@ -89,7 +100,18 @@ public class FloorGenerator : MonoBehaviour {
       newIsland.transform.localPosition = new Vector3((position[0] - position[1]) * distanceBetweenIslands,
                                                       -(position[0] + position[1]) * distanceBetweenIslands,
                                                       0);
-      newIsland.name = "Island " + position[0] + " " + position[1];
+      // TODO: Rework and refactor to make this beautiful.
+      if (position == treasureRoomPosition) {
+        newIsland.name = "Treasure Room" + position[0] + " " + position[1];
+      } else if (position == bossRoomPosition) {
+        newIsland.name = "Boss Room" + position[0] + " " + position[1];
+      } else if (position == shopRoomPosition) {
+        newIsland.name = "Shop Room" + position[0] + " " + position[1];
+      } else if (position == spawnRoomPosition) {
+        newIsland.name = "Spawn Room" + position[0] + " " + position[1];
+      } else {
+        newIsland.name = "Island " + position[0] + " " + position[1];
+      }
       var islandGenerator = newIsland.AddComponent<IslandGenerator>();
     }
   }
