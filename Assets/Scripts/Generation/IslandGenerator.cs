@@ -32,7 +32,7 @@ public class IslandGenerator : MonoBehaviour {
 
   // Random walk
   private void createIsland() {
-    HashSet<Vector2Int> floorPositions = new HashSet<Vector2Int>();
+    HashSet<Vector2Int> positions = new HashSet<Vector2Int>();
     var currentPosition = startPosition;
 
     for (int i = 0; i < iterations; i++) {
@@ -44,16 +44,16 @@ public class IslandGenerator : MonoBehaviour {
         path.Add(newPosition);
         previousPosition = newPosition;
       }
-      floorPositions.UnionWith(path);
+      positions.UnionWith(path);
       if(startRandomly) {
-        currentPosition = floorPositions.ElementAt(Random.Range(0, floorPositions.Count));
+        currentPosition = positions.ElementAt(Random.Range(0, positions.Count));
       }
     }
 
-    Vector2 size = new Vector2(floorPositions.Max(x => x.x) - floorPositions.Min(x => x.x) + 1,
-      floorPositions.Max(x => x.y) - floorPositions.Min(x => x.y) + 1);
+    Vector2 size = new Vector2(positions.Max(x => x.x) - positions.Min(x => x.x) + 1,
+      positions.Max(x => x.y) - positions.Min(x => x.y) + 1);
 
-    foreach (var position in floorPositions) {
+    foreach (var position in positions) {
       var newTile = PrefabUtility.InstantiatePrefab(basicTile) as GameObject;
       newTile.transform.SetParent(transform);
       newTile.transform.localPosition = new Vector3((position[0] - position[1]) * offset.x,
