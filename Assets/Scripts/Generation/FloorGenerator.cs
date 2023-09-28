@@ -23,17 +23,24 @@ public class FloorGenerator : MonoBehaviour {
   private bool startRandomly = true;
 
   void Start() {
-    createFloor();
+    createFloor(-1);
   }
 
   void Update() {
     if (Input.GetKeyDown(KeyCode.Space)) {
       destroyFloor();
-      createFloor();
+      createFloor(-1);
     }
   }
 
-  private void createFloor() {
+  private void createFloor(int seed) {
+    // Set seed
+    if (seed == -1) {
+      Random.InitState(System.DateTime.Now.Millisecond);
+    } else {
+      Random.InitState(seed);
+    }
+
     // Create island positions list.
     HashSet<Vector2Int> positions = new HashSet<Vector2Int>();
     positions.Add(startPosition);
