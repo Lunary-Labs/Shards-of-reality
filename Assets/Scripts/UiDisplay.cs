@@ -11,8 +11,8 @@ public class UiDisplay : MonoBehaviour
     public TextMeshProUGUI healthText;
     private bool childFound = false;
 
-    void Start(){
-        foreach (Transform child in transform){
+    void Start() {
+        foreach (Transform child in transform) {
             if (child.name == "text_Health")
             {
                 healthText = child.GetComponent<TextMeshProUGUI>();
@@ -26,11 +26,11 @@ public class UiDisplay : MonoBehaviour
     }
 
 
-    void Update(){
-        if(childFound && player != null){
+    void Update() {
+        if(childFound && player != null) {
             healthText.text = "HP : " + player.GetCurrentHealth().ToString();
         }
-        else if(childFound && enemy != null){
+        else if(childFound && enemy != null) {
             healthText.text = enemy.GetCurrentHealth().ToString();
         }
         

@@ -5,13 +5,13 @@ using UnityEngine;
 public class BulletController : MonoBehaviour{
     public int damage = 10; // The damage dealt by the bullet.
     
-    private void OnTriggerEnter2D(Collider2D other){
+    private void OnTriggerEnter2D(Collider2D other) {
         // Check if the bullet has hit an enemy (or any other object you want to affect).
-        if (other.CompareTag("Enemy")){
+        if (other.CompareTag("Enemy")) {
             // Get a script or component for handling the enemy's health.
             EnemyController enemyController = other.GetComponent<EnemyController>();
 
-            if (enemyController != null){
+            if (enemyController != null) {
                 // Inflict damage to the enemy using the enemy's health management script.
                 enemyController.TakeDamage(damage);
 
@@ -20,12 +20,12 @@ public class BulletController : MonoBehaviour{
             }
         }
 
-        if (other.CompareTag("Player")){
+        if (other.CompareTag("Player")) {
             // Get a script or component for handling the enemy's health.
             Mag player = other.GetComponent<Mag>();
 
-            if (player != null){
-                if (player.CanTakeDamage()){
+            if (player != null) {
+                if (player.CanTakeDamage()) {
                     player.TakeDamage(damage);
                     Destroy(gameObject);
                 }

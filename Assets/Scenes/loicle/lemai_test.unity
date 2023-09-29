@@ -675,7 +675,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 3.6
+  orthographic size: 4.95
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -719,7 +719,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ComponentVersion: 1
-  m_AssetsPPU: 150
+  m_AssetsPPU: 100
   m_RefResolutionX: 1920
   m_RefResolutionY: 1080
   m_CropFrame: 0
@@ -858,7 +858,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 804924990, guid: f9557bec40b823345abf7f68f92d39c5, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 15304e6299fc75c4d8a8b1318716a465, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -899,13 +899,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
-  rb: {fileID: 1095312239}
   maxHealth: 100
   currentHealth: 0
   dashSpeed: 13
   dashDuration: 0.3
-  dashCooldown: 1
+  dashCooldown: 3
   isDashing: 0
+  currentInvulnerabilityTime: 2
 --- !u!50 &1095312239
 Rigidbody2D:
   serializedVersion: 4
@@ -1194,6 +1194,7 @@ MonoBehaviour:
   rb: {fileID: 0}
   isDashing: 0
   dashSpeed: 10
+  dashCast: 0
 --- !u!50 &1586341001
 Rigidbody2D:
   serializedVersion: 4

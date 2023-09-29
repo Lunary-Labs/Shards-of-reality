@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyController : MonoBehaviour
-{
+public class EnemyController : MonoBehaviour {
     // Stats
     public int maxHealth = 100; // Maximum health of the enemy.
     private int currentHealth; // Current health of the enemy.
@@ -31,15 +30,14 @@ public class EnemyController : MonoBehaviour
     public float dashSpeed = 17f; // Speed of the dash.
     public bool dashCast = false; // Is a dash currently being cast?
 
-    private void Start(){
+    private void Start() {
         rb = gameObject.GetComponent<Rigidbody2D>();
         currentHealth = maxHealth;
     }
 
-    private void Update(){
+    private void Update() {
         // Death handling
-        if (currentHealth <= 0)
-        {
+        if (currentHealth <= 0) {
             Destroy(gameObject);
         }
 
@@ -48,27 +46,24 @@ public class EnemyController : MonoBehaviour
         currentTimeDashing += Time.deltaTime;
 
         // Shooting delay
-        if (currentTimeShooting >= shootDelay){
-            if (activateShooting){
+        if (currentTimeShooting >= shootDelay) {
+            if (activateShooting) {
                 Shoot(); // Call the Shoot function.
                 currentTimeShooting = 0.0f;
             }
         }
 
-        // Dashing delay
-        // Chasing AI 
-        if (distance <= range){
+        if (distance <= range) {
             dashDirection = (player.transform.position - transform.position).normalized;
-            if (currentTimeDashing >= dashCooldown){
-                Debug.Log(dashDirection);
+            if (currentTimeDashing >= dashCooldown) {
                 currentTimeDashing = 0f;
                 StartCoroutine(Dash()); // Start the dash coroutine.
             }
         }
     }
 
-    private void FixedUpdate(){
-        if (!isDashing && !dashCast){
+    private void FixedUpdate() {
+        if (!isDashing && !dashCast) {
             // Calculate the distance and direction to the player for chasing.
             distance = Vector2.Distance(transform.position, player.transform.position);
             Vector2 direction = player.transform.position - transform.position;
@@ -76,16 +71,16 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    public int GetCurrentHealth(){
+    public int GetCurrentHealth() {
         return currentHealth;
     }
 
-    public void TakeDamage(int damage){
+    public void TakeDamage(int damage) {
         this.currentHealth -= damage;
         Debug.Log(currentHealth);
     }
 
-    public void Shoot(){
+    public void Shoot() {
         // Create a projectile and set its velocity.
         Vector3 projectileStartPosition = selfPos.TransformPoint(new Vector3(-1, 0, 0));
         GameObject projectileInstance = Instantiate(projectilePrefab, projectileStartPosition, Quaternion.identity);
@@ -94,7 +89,8 @@ public class EnemyController : MonoBehaviour
         rb.velocity = leftDirection.normalized * projectileSpeed;
     }
 
-    private IEnumerator Dash(){     dashCast = true;
+    private IEnumerator Dash() {     
+        dashCast = true;
         rb.velocity = Vector2.zero;
         yield return new WaitForSeconds(dashCastTime);
 
@@ -111,11 +107,10 @@ public class EnemyController : MonoBehaviour
         rb.constraints |= RigidbodyConstraints2D.FreezePositionY;
         rb.velocity = Vector2.zero;
         isDashing = false;
-        Debug.Log("Dash3");
     }
 
-    void OnCollisionEnter2D(Collision2D collision){
-        if (collision.gameObject.CompareTag("Player")){
+    void OnCollisionEnter2D(Collision2D collision) {
+        if (collision.gameObject.CompareTag("Player")) {
             // Inflict damage to the player when colliding with the enemy.
             Mag currentPlayer = collision.gameObject.GetComponent<Mag>();
             currentPlayer.TakeDamage(10);
