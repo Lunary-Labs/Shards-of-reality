@@ -82,7 +82,7 @@ public class FloorGenerator : MonoBehaviour {
     var treasureRoomPosition = twoNeighborPosition.ElementAt(Random.Range(0, twoNeighborPosition.Count));
     twoNeighborPosition.Remove(treasureRoomPosition);
 
-    // This room cause a bug if there are no one neighbor room.
+    // This room cause a bug if there is not at least one neighbor room.
     // TODO: Find a way to fix this.
     var bossRoomPosition = oneNeighborPosition.ElementAt(Random.Range(0, oneNeighborPosition.Count));
     oneNeighborPosition.Remove(bossRoomPosition);
@@ -114,6 +114,33 @@ public class FloorGenerator : MonoBehaviour {
       }
       var islandGenerator = newIsland.AddComponent<IslandGenerator>();
     }
+  }
+
+  private void createBasicIsland(Vector2Int position) {
+    var newIsland = new GameObject();
+    newIsland.transform.SetParent(transform);
+    Vector2Int normalPosition = new Vector2Int(2, 3);
+    newIsland.transform.localPosition = new Vector3((position[0] - position[1]) * distanceBetweenIslands,
+                                                    -(position[0] + position[1]) * distanceBetweenIslands,
+                                                    0);
+    newIsland.name = "Island " + position[0] + " " + position[1];
+    var islandGenerator = newIsland.AddComponent<IslandGenerator>();
+  }
+
+  private void createTreasureIsland(Vector2Int position) {
+    //TODO
+  }
+
+  private void createBossIsland(Vector2Int position) {
+    //TODO
+  }
+
+  private void createShopIsland(Vector2Int position) {
+    //TODO
+  }
+
+  private void createSpawnIsland(Vector2Int position) {
+    //TODO
   }
 
   private void destroyFloor() {

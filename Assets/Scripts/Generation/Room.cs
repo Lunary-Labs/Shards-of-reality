@@ -1,37 +1,39 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEditor;
 
-public class IslandGenerator : MonoBehaviour {
-  private Vector2Int startPosition = Vector2Int.zero;
-  [SerializeField]
-  private GameObject basicTile;
-  [SerializeField]
-  private int iterations = 500;
-  [SerializeField]
-  public int walkLenght = 20;
-  [SerializeField]
-  public bool startRandomly = true;
-  [SerializeField]
-  private Vector2 offset = new Vector2(0.5f, 0.25f);
+public class Room : MonoBehaviour {
+  private Vector2Int position;
+  private string type;
 
-  void Start() {
-    // Load prefab for testing
-    basicTile = (GameObject)Resources.Load("Prefabs/floor1");
-    createIsland();
+  // Not sure if this will be usefull
+  private int form;
+
+  // Constructors
+  public Room(Vector2Int position, string type, int form) {
+    this.position = position;
+    this.type = type;
+    this.form = form;
   }
 
-  void Update() {
-    if (Input.GetKeyDown(KeyCode.Space)) {
-      destroyIsland();
-      createIsland();
-    }
+  // Getters / Setters
+  public Vector2Int getPosition() { return this.position; }
+  public string getType() { return this.type; }
+  public int getForm() { return this.form; }
+
+  public void setPosition(Vector2Int position) { this.position = position; }
+  public void setType(string type) { this.type = type; }
+  public void setForm(int form) { this.form = form; }
+
+  public override string ToString() {
+    return "Room: " + position + " " + type + " " + form;
   }
 
-  // Random walk
-  private void createIsland() {
+  // Cleaners
+  public void destroyRoom() { Destroy(this.gameObject); }
+
+  // Generation
+  public void generateRoom() {
     HashSet<Vector2Int> positions = new HashSet<Vector2Int>();
     var currentPosition = startPosition;
 
@@ -57,15 +59,9 @@ public class IslandGenerator : MonoBehaviour {
       var newTile = PrefabUtility.InstantiatePrefab(basicTile) as GameObject;
       newTile.transform.SetParent(transform);
       newTile.transform.localPosition = new Vector3((position[0] - position[1]) * offset.x,
-       -(position[0] + position[1]) * offset.y,
-       -(position[0] + position[1]) / (size.x + size.y));
+                                                   -(position[0] + position[1]) * offset.y,
+                                                   0);
       newTile.name += " (" + position[0] + ", " + position[1] + ")";
-    }
-  }
-
-  private void destroyIsland() {
-    foreach (Transform child in transform) {
-      Destroy(child.gameObject);
     }
   }
 }
