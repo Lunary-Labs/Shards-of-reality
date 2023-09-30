@@ -35,7 +35,6 @@ public class Tileset : MonoBehaviour {
     GameObject[] loadedTiles = Resources.LoadAll<GameObject>("Tiles");
     foreach (GameObject tile in loadedTiles) {
       tiles[(int)tile.GetComponent<Tile>().tileType] = tile;
-      Debug.Log("Loaded tile: " + tiles[(int)tile.GetComponent<Tile>().tileType].name);
     }
   }
 

@@ -4,18 +4,24 @@ using UnityEngine;
 
 public class Abyss : MonoBehaviour {
   // Abyss variables
-  private int floorAmount;
+  private int floorAmount = 7;
   private List<Floor> floors = new List<Floor>();
-  private int seed;
 
-  // Constructors
-  public Abyss(int seed, int floorAmount = 7) {
-    if(seed == -1) { seed = System.DateTime.Now.Millisecond; }
-    else { this.seed = seed; }
+  // Generation variables
+  private int seed = -1;
+  private int offsetBetweenFloors = 500;
+
+  void Start() {
+    if(seed == -1) {
+      this.seed = System.DateTime.Now.Millisecond;
+    } else {
+      this.seed = seed;
+    }
 
     this.floorAmount = floorAmount;
 
     Random.InitState(this.seed);
+    generateAbyss();
   }
 
   // Getters / Setters
@@ -33,9 +39,13 @@ public class Abyss : MonoBehaviour {
   // Generation
   public void generateAbyss() {
     for(int i = 0; i < this.floorAmount; i++) {
-      Floor floor = new Floor(i, "Floor " + i);
-      floor.generateFloor();
+      GameObject newFloor = new GameObject("Floor " + (i + 1));
+      newFloor.transform.parent = this.transform;
+      newFloor.transform.position = new Vector3(offsetBetweenFloors * i, 0, 0);
+      Floor floor = newFloor.AddComponent<Floor>();
+      floor.Initialize(i, "Floor " + i);
       this.floors.Add(floor);
+      floor.generateFloor();
     }
   }
 }

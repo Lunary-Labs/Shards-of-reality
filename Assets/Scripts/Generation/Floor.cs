@@ -19,7 +19,7 @@ public class Floor : MonoBehaviour {
   private bool startRandomly = true;
 
   // Constructors
-  public Floor(int floorId, string floorName) {
+  public void Initialize(int floorId, string floorName) {
     this.floorId = floorId;
     this.floorName = floorName;
   }
@@ -74,35 +74,29 @@ public class Floor : MonoBehaviour {
       }
     }
 
-    // Place special rooms.
-    // TODO: Determine if theses random coordinates need to be removed from the global room positions list.
-    //       Will probably cause problems when linking rooms together.
-    var treasureRoomPosition = twoNeighborPosition.ElementAt(Random.Range(0, twoNeighborPosition.Count));
-    twoNeighborPosition.Remove(treasureRoomPosition);
-    // This room cause a bug if there is not at least one neighbor room.
-    // TODO: Find a way to fix this.
-    var bossRoomPosition = oneNeighborPosition.ElementAt(Random.Range(0, oneNeighborPosition.Count));
-    oneNeighborPosition.Remove(bossRoomPosition);
-    var shopRoomPosition = twoNeighborPosition.ElementAt(Random.Range(0, twoNeighborPosition.Count));
-    twoNeighborPosition.Remove(shopRoomPosition);
-    var spawnRoomPosition = maxNeighborPosition;
+    // // Place special rooms.
+    // // TODO: Determine if theses random coordinates need to be removed from the global room positions list.
+    // //       Will probably cause problems when linking rooms together.
+    // var treasureRoomPosition = twoNeighborPosition.ElementAt(Random.Range(0, twoNeighborPosition.Count));
+    // twoNeighborPosition.Remove(treasureRoomPosition);
+    // // This room cause a bug if there is not at least one neighbor room.
+    // // TODO: Find a way to fix this.
+    // var bossRoomPosition = oneNeighborPosition.ElementAt(Random.Range(0, oneNeighborPosition.Count));
+    // oneNeighborPosition.Remove(bossRoomPosition);
+    // var shopRoomPosition = twoNeighborPosition.ElementAt(Random.Range(0, twoNeighborPosition.Count));
+    // twoNeighborPosition.Remove(shopRoomPosition);
+    // var spawnRoomPosition = maxNeighborPosition;
 
-    // Create Room classes.
-    foreach (Vector2Int position in positions) {
-      Room room;
-      if (position == treasureRoomPosition) {
-        room = new Room(position, "treasure", 0);
-      } else if (position == bossRoomPosition) {
-        room = new Room(position, "boss", 0);
-      } else if (position == shopRoomPosition) {
-        room = new Room(position, "shop", 0);
-      } else if (position == spawnRoomPosition) {
-        room = new Room(position, "spawn", 0);
-      } else {
-        room = new Room(position, "basic", 0);
-      }
-      rooms.Add(room);
+    foreach(Vector2Int position in positions) {
+      GameObject newRoom = new GameObject("Room " + position);
+      newRoom.transform.parent = this.transform;
+      newRoom.transform.localPosition = new Vector3(position.x * offset.x, position.y * offset.y, 0);
+      Room room = newRoom.AddComponent<Room>();
+      room.Initialize(position, "Room " + position, 0);
+      this.rooms.Add(room);
+      room.generateRoom();
     }
+
   }
 
   private int getNeighborsAmount(Vector2Int position, HashSet<Vector2Int> positions) {

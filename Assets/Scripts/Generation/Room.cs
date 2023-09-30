@@ -19,7 +19,7 @@ public class Room : MonoBehaviour {
   private Vector2 offset = new Vector2(0.5f, 0.25f);
 
   // Constructors
-  public Room(Vector2Int position, string type, int form) {
+  public void Initialize(Vector2Int position, string type, int form) {
     this.position = position;
     this.type = type;
     this.form = form;
