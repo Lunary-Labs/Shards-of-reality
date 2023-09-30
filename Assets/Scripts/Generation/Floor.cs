@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Floor : MonoBehaviour {
@@ -86,7 +87,7 @@ public class Floor : MonoBehaviour {
     twoNeighborPosition.Remove(shopRoomPosition);
     var spawnRoomPosition = maxNeighborPosition;
 
-    // Create Room classes and GameObjects.
+    // Create Room classes.
     foreach (Vector2Int position in positions) {
       Room room;
       if (position == treasureRoomPosition) {
@@ -102,25 +103,15 @@ public class Floor : MonoBehaviour {
       }
       rooms.Add(room);
     }
+  }
 
-    var newRoom = new GameObject();
-    newRoom.transform.SetParent(transform);
-    Vector2Int normalPosition = new Vector2Int(2, 3);
-    newRoom.transform.localPosition = new Vector3((position[0] - position[1]) * distanceBetweenIslands,
-                                                 -(position[0] + position[1]) * distanceBetweenIslands,
-                                                 0);
-
-    // TODO: Rework and refactor to make this beautiful.
-    if (position == treasureRoomPosition) {
-      newRoom.name = "Treasure Room" + position[0] + " " + position[1];
-    } else if (position == bossRoomPosition) {
-      newRoom.name = "Boss Room" + position[0] + " " + position[1];
-    } else if (position == shopRoomPosition) {
-      newRoom.name = "Shop Room" + position[0] + " " + position[1];
-    } else if (position == spawnRoomPosition) {
-      newRoom.name = "Spawn Room" + position[0] + " " + position[1];
-    } else {
-      newRoom.name = "Island " + position[0] + " " + position[1];
+  private int getNeighborsAmount(Vector2Int position, HashSet<Vector2Int> positions) {
+    int amount = 0;
+    foreach (var direction in Direction2D.cardinalDirectionInt) {
+      if (positions.Contains(position + direction)) {
+        amount++;
+      }
     }
+    return amount;
   }
 }

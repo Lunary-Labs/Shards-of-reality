@@ -148,7 +148,7 @@ public class FloorGenerator : MonoBehaviour {
       Destroy(child.gameObject);
     }
   }
-
+  
   private int getNeighborsAmount(Vector2Int position, HashSet<Vector2Int> positions) {
     int amount = 0;
     foreach (var direction in Direction2D.cardinalDirectionInt) {

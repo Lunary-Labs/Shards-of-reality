@@ -7,8 +7,6 @@ using UnityEditor;
 public class IslandGenerator : MonoBehaviour {
   private Vector2Int startPosition = Vector2Int.zero;
   [SerializeField]
-  private GameObject basicTile;
-  [SerializeField]
   private int iterations = 500;
   [SerializeField]
   public int walkLenght = 20;
@@ -19,7 +17,6 @@ public class IslandGenerator : MonoBehaviour {
 
   void Start() {
     // Load prefab for testing
-    basicTile = (GameObject)Resources.Load("Prefabs/floor1");
     createIsland();
   }
 
@@ -54,7 +51,7 @@ public class IslandGenerator : MonoBehaviour {
       positions.Max(x => x.y) - positions.Min(x => x.y) + 1);
 
     foreach (var position in positions) {
-      var newTile = PrefabUtility.InstantiatePrefab(basicTile) as GameObject;
+      var newTile = PrefabUtility.InstantiatePrefab(Tileset.getTile(Tiles.Basic)) as GameObject;
       newTile.transform.SetParent(transform);
       newTile.transform.localPosition = new Vector3((position[0] - position[1]) * offset.x,
        -(position[0] + position[1]) * offset.y,
