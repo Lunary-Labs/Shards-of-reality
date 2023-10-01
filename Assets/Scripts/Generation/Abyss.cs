@@ -34,8 +34,8 @@ public class Abyss : MonoBehaviour {
 
   // Generation
   public void generateAbyss() {
-    for(int i = 0; i < this.floorAmount; i++) {
-      GameObject newFloor = new GameObject("Floor " + (i + 1));
+    for(int i = 1; i <= this.floorAmount; i++) {
+      GameObject newFloor = new GameObject("Floor " + i);
       newFloor.transform.parent = this.transform;
       newFloor.transform.position = new Vector3(offsetBetweenFloors * i, 0, 0);
       Floor floor = newFloor.AddComponent<Floor>();

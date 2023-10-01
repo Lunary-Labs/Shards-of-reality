@@ -8,7 +8,6 @@ public class Room : MonoBehaviour {
   // Room variables.
   private Vector2Int position;
   private string type;
-  private int form; // Utility ???
 
   // Generation variables.
   private Vector2Int startPosition = Vector2Int.zero;
@@ -18,23 +17,20 @@ public class Room : MonoBehaviour {
   private Vector2 offset = new Vector2(0.5f, 0.25f);
 
   // Constructors
-  public void Initialize(Vector2Int position, string type, int form) {
+  public void Initialize(Vector2Int position, string type) {
     this.position = position;
     this.type = type;
-    this.form = form;
   }
 
   // Getters / Setters
   public Vector2Int getPosition() { return this.position; }
   public string getType() { return this.type; }
-  public int getForm() { return this.form; }
 
   public void setPosition(Vector2Int position) { this.position = position; }
   public void setType(string type) { this.type = type; }
-  public void setForm(int form) { this.form = form; }
 
   public override string ToString() {
-    return "Room: " + position + " " + type + " " + form;
+    return "Room: " + position + " " + type;
   }
 
   // Cleaners
