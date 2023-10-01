@@ -90,7 +90,9 @@ public class Floor : MonoBehaviour {
     foreach(Vector2Int position in positions) {
       GameObject newRoom = new GameObject("Room " + position);
       newRoom.transform.parent = this.transform;
-      newRoom.transform.localPosition = new Vector3(position.x * offset.x, position.y * offset.y, 0);
+      newRoom.transform.localPosition = new Vector3((position[0] - position[1]) * distanceBetweenRooms,
+                                                    -(position[0] + position[1]) * distanceBetweenRooms,
+                                                    0);
       Room room = newRoom.AddComponent<Room>();
       room.Initialize(position, "Room " + position, 0);
       this.rooms.Add(room);

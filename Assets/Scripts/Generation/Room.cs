@@ -8,14 +8,13 @@ public class Room : MonoBehaviour {
   // Room variables.
   private Vector2Int position;
   private string type;
-
   private int form; // Utility ???
 
   // Generation variables.
   private Vector2Int startPosition = Vector2Int.zero;
   private int iterations = 500;
-  public int walkLenght = 20;
-  public bool startRandomly = true;
+  private int walkLenght = 20;
+  private bool startRandomly = true;
   private Vector2 offset = new Vector2(0.5f, 0.25f);
 
   // Constructors
@@ -69,7 +68,7 @@ public class Room : MonoBehaviour {
       newTile.transform.SetParent(transform);
       newTile.transform.localPosition = new Vector3((position[0] - position[1]) * offset.x,
                                                    -(position[0] + position[1]) * offset.y,
-                                                   0);
+                                                   -(position[0] + position[1]) / (size.x + size.y));
       newTile.name += " (" + position[0] + ", " + position[1] + ")";
     }
   }

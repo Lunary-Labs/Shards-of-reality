@@ -9,16 +9,12 @@ public class Abyss : MonoBehaviour {
 
   // Generation variables
   private int seed = -1;
-  private int offsetBetweenFloors = 500;
+  private int offsetBetweenFloors = 750;
 
   void Start() {
     if(seed == -1) {
       this.seed = System.DateTime.Now.Millisecond;
-    } else {
-      this.seed = seed;
     }
-
-    this.floorAmount = floorAmount;
 
     Random.InitState(this.seed);
     generateAbyss();
