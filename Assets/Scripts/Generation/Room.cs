@@ -65,6 +65,12 @@ public class Room : MonoBehaviour {
     else if (neighbors.SequenceEqual(new bool[] { true, false, false, true})) { return Tiles.CornerBottomRight; }
     else if (neighbors.SequenceEqual(new bool[] { false, true, true, false})) { return Tiles.CornerTopLeft; }
     else if (neighbors.SequenceEqual(new bool[] { false, false, true, true})) { return Tiles.CornerTopRight; }
+    else if (neighbors.SequenceEqual(new bool[] { false, true, false, true})) { return Tiles.CorridorLeft; }
+    else if (neighbors.SequenceEqual(new bool[] { true, false, true, false})) { return Tiles.CorridorRight; }
+    else if (neighbors.SequenceEqual(new bool[] { false, true, false, false})) { return Tiles.EndLeft; }
+    else if (neighbors.SequenceEqual(new bool[] { false, false, false, true})) { return Tiles.EndRight; }
+    else if (neighbors.SequenceEqual(new bool[] { false, false, true, false})) { return Tiles.EndTop; }
+    else if (neighbors.SequenceEqual(new bool[] { true, false, false, false})) { return Tiles.EndBottom; }
     else { return Tiles.Basic; }
   }
 

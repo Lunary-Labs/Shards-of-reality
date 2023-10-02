@@ -15,6 +15,14 @@ public enum Tiles {
   CornerTopRight,
   CornerBottomLeft,
   CornerBottomRight,
+
+  CorridorLeft,
+  CorridorRight,
+
+  EndLeft,
+  EndRight,
+  EndTop,
+  EndBottom
 }
 
 public enum Tilesets {
@@ -54,7 +62,7 @@ public class Tileset : MonoBehaviour {
           tilesets[i][(int)tile.GetComponent<Tile>().tileType] = tile;
         }
     }
-}
+  }
 
   public static GameObject getTile(Tilesets tileset, Tiles tileType) {
     if (instance != null && (int)tileType < instance.tilesets[(int)tileset].Length) {
