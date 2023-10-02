@@ -60,8 +60,6 @@ public class Floor : MonoBehaviour {
 
     // Place special rooms.
     HashSet<Vector2Int> temp_positions = new HashSet<Vector2Int>(positions);
-    Debug.Log("Positions: " + positions.Count);
-    Debug.Log("temp Positions: " + temp_positions.Count);
     var spawnRoomPosition = new Vector2Int();
     int max = 0;
     foreach (var position in temp_positions) {
@@ -77,9 +75,6 @@ public class Floor : MonoBehaviour {
     temp_positions.Remove(bossRoomPosition);
     var shopRoomPosition = temp_positions.ElementAt(Random.Range(0, temp_positions.Count));
     temp_positions.Remove(shopRoomPosition);
-
-    Debug.Log("Positions: " + positions.Count);
-    Debug.Log("temp Positions: " + temp_positions.Count);
 
     foreach(Vector2Int position in positions) {
       var str = "";

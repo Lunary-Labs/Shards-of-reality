@@ -1,22 +1,33 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public enum Tiles {
   Basic,
-  BorderRight,
+
   BorderLeft,
+  BorderRight,
   BorderTop,
   BorderBottom,
+
   CornerTopLeft,
   CornerTopRight,
   CornerBottomLeft,
-  CornerBottomRight
+  CornerBottomRight,
+}
+
+public enum Tilesets {
+  Basic,
+  Boss,
+  Shop,
+  Spawn,
+  Treasure
 }
 
 public class Tileset : MonoBehaviour {
   private static Tileset instance;
-  private GameObject[] tiles;
+  private GameObject[][] tilesets;
 
   private void Awake() {
     if (instance == null) {
@@ -26,21 +37,28 @@ public class Tileset : MonoBehaviour {
     else {
       Destroy(gameObject);
     }
-
-    tiles = new GameObject[Tiles.GetValues(typeof(Tiles)).Length];
-    loadTilesFromResources();
+    LoadTilesFromResources();
   }
 
-  public void loadTilesFromResources() {
-    GameObject[] loadedTiles = Resources.LoadAll<GameObject>("Tiles");
-    foreach (GameObject tile in loadedTiles) {
-      tiles[(int)tile.GetComponent<Tile>().tileType] = tile;
+  public void LoadTilesFromResources() {
+    Tilesets[] tilesetValues = (Tilesets[])Enum.GetValues(typeof(Tilesets));
+    tilesets = new GameObject[tilesetValues.Length][];
+    for (int i = 0; i < tilesetValues.Length; i++) {
+        // Load all the GameObjects in the tileset folder
+        GameObject[] loadedTiles = Resources.LoadAll<GameObject>("Tilesets/" + tilesetValues[i].ToString());
+
+        // Initialize the tileset array
+        tilesets[i] = new GameObject[loadedTiles.Length];
+
+        foreach (GameObject tile in loadedTiles) {
+          tilesets[i][(int)tile.GetComponent<Tile>().tileType] = tile;
+        }
     }
-  }
+}
 
-  public static GameObject getTile(Tiles tileType) {
-    if (instance != null && (int)tileType < instance.tiles.Length) {
-      return instance.tiles[(int)tileType];
+  public static GameObject getTile(Tilesets tileset, Tiles tileType) {
+    if (instance != null && (int)tileType < instance.tilesets[(int)tileset].Length) {
+      return instance.tilesets[(int)tileset][(int)tileType];
     }
     return null;
   }
