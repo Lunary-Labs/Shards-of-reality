@@ -43,7 +43,7 @@ public class Floor : MonoBehaviour {
     HashSet<Vector2Int> positions = new HashSet<Vector2Int>();
     positions.Add(startPosition);
     var currentPosition = startPosition;
-    for (int i = 0; i < iterations; i++) {
+    while (positions.Count < getRoomsAmount()) {
       HashSet<Vector2Int> path = new HashSet<Vector2Int>();
       path.Add(startPosition);
       currentPosition = startPosition;
@@ -51,8 +51,11 @@ public class Floor : MonoBehaviour {
         var newPosition = currentPosition + Direction2D.getRandomCardinalDirection();
         path.Add(newPosition);
         currentPosition = newPosition;
+        positions.UnionWith(path);
+        if(positions.Count >= getRoomsAmount()) {
+          break;
+        }
       }
-      positions.UnionWith(path);
       if(startRandomly) {
         currentPosition = positions.ElementAt(Random.Range(0, positions.Count));
       }

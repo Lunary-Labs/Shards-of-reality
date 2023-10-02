@@ -104,6 +104,7 @@ public class Room : MonoBehaviour {
     foreach (var position in positions) {
       var neighbors = getTileNeighbors(position, positions);
       var tile = getCorrespondingTile(neighbors);
+
       var newTile = PrefabUtility.InstantiatePrefab(Tileset.getTile(tileset, tile)) as GameObject;
       newTile.transform.SetParent(transform);
       newTile.transform.localPosition = new Vector3((position[0] - position[1]) * offset.x,
