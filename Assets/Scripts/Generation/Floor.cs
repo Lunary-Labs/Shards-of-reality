@@ -12,7 +12,6 @@ public class Floor : MonoBehaviour {
 
   // Generation variables
   private Vector2Int startPosition = Vector2Int.zero;
-  private int iterations = 4;
   private int walkLenght = 12;
   private int distanceBetweenRooms = 50;
   private Vector2Int offset = new Vector2Int(25, -25);
@@ -25,25 +24,25 @@ public class Floor : MonoBehaviour {
   }
 
   // Getters / Setters
-  public int getFloorId() { return floorId; }
-  public string getFloorName() { return floorName; }
+  public int GetFloorId() { return floorId; }
+  public string GetFloorName() { return floorName; }
 
-  public void setFloorId(int floorId) { this.floorId = floorId; }
-  public void setFloorName(string floorName) { this.floorName = floorName; }
+  public void SetFloorId(int floorId) { this.floorId = floorId; }
+  public void SetFloorName(string floorName) { this.floorName = floorName; }
 
   public override string ToString() {
     return "Floor: " + floorId + " " + floorName;
   }
 
   // Cleaners
-  public void destroyFloor() { Destroy(this.gameObject); }
+  public void DestroyFloor() { Destroy(this.gameObject); }
 
-  public void generateFloor() {
+  public void GenerateFloor() {
     // Create room positions list.
     HashSet<Vector2Int> positions = new HashSet<Vector2Int>();
     positions.Add(startPosition);
     var currentPosition = startPosition;
-    while (positions.Count < getRoomsAmount()) {
+    while (positions.Count < GetRoomsAmount()) {
       HashSet<Vector2Int> path = new HashSet<Vector2Int>();
       path.Add(startPosition);
       currentPosition = startPosition;
@@ -52,7 +51,7 @@ public class Floor : MonoBehaviour {
         path.Add(newPosition);
         currentPosition = newPosition;
         positions.UnionWith(path);
-        if(positions.Count >= getRoomsAmount()) {
+        if(positions.Count >= GetRoomsAmount()) {
           break;
         }
       }
@@ -66,7 +65,7 @@ public class Floor : MonoBehaviour {
     var spawnRoomPosition = new Vector2Int();
     int max = 0;
     foreach (var position in temp_positions) {
-      if (getNeighborsAmount(position, temp_positions) > max) {
+      if (GetNeighborsAmount(position, temp_positions) > max) {
         spawnRoomPosition = position;
       }
     }
@@ -98,13 +97,13 @@ public class Floor : MonoBehaviour {
                                                     -(position[0] + position[1]) * distanceBetweenRooms,
                                                     0);
       Room room = newRoom.AddComponent<Room>();
-      room.Initialize(position, str);
+      room.Initialize(position, str, this);
       this.rooms.Add(room);
-      room.generateRoom();
+      room.GenerateRoom();
     }
   }
 
-  private int getNeighborsAmount(Vector2Int position, HashSet<Vector2Int> positions) {
+  private int GetNeighborsAmount(Vector2Int position, HashSet<Vector2Int> positions) {
     int amount = 0;
     foreach (var direction in Direction2D.cardinalDirectionInt) {
       if (positions.Contains(position + direction)) {
@@ -114,7 +113,7 @@ public class Floor : MonoBehaviour {
     return amount;
   }
 
-  private int getRoomsAmount() {
+  private int GetRoomsAmount() {
     return this.floorId * 3 + 8;
   }
 }

@@ -8,6 +8,7 @@ public class Room : MonoBehaviour {
   // Room variables.
   private Vector2Int position;
   private string type;
+  private Floor parentFloor;
 
   // Generation variables.
   private Vector2Int startPosition = Vector2Int.zero;
@@ -17,19 +18,20 @@ public class Room : MonoBehaviour {
   private Vector2 offset = new Vector2(0.5f, 0.25f);
 
   // Constructors
-  public void Initialize(Vector2Int position, string type) {
+  public void Initialize(Vector2Int position, string type, Floor parentFloor) {
     this.position = position;
     this.type = type;
+    this.parentFloor = parentFloor;
   }
 
   // Getters / Setters
-  public Vector2Int getPosition() { return this.position; }
-  public string getType() { return this.type; }
+  public Vector2Int GetPosition() { return this.position; }
+  public string GetRoomType() { return this.type; }
 
   // Return the coresponding tileset for the room type.
   // TODO: Refactor, this is ugly.
   // Later, staying with this will make a really long function.
-  public Tilesets getTileset() {
+  public Tilesets GetTileset() {
     return Tilesets.Basic;
     // switch (this.type) {
     //   case "Spawn": return Tilesets.Spawn;
@@ -40,14 +42,14 @@ public class Room : MonoBehaviour {
     // }
   }
 
-  public void setPosition(Vector2Int position) { this.position = position; }
-  public void setType(string type) { this.type = type; }
+  public void SetPosition(Vector2Int position) { this.position = position; }
+  public void SetType(string type) { this.type = type; }
 
   public override string ToString() {
     return "Room: " + position + " " + type;
   }
 
-  public bool[] getTileNeighbors(Vector2Int position, HashSet<Vector2Int> positions) {
+  public bool[] GetTileNeighbors(Vector2Int position, HashSet<Vector2Int> positions) {
     bool[] neighbors = new bool[4];
     neighbors[(int)Directions.North] = positions.Contains(position + Direction2D.getCardinalDirection(Directions.North));
     neighbors[(int)Directions.East] = positions.Contains(position + Direction2D.getCardinalDirection(Directions.East));
@@ -56,7 +58,7 @@ public class Room : MonoBehaviour {
     return neighbors;
   }
 
-  public Tiles getCorrespondingTile(bool[] neighbors) {
+  public Tiles GetCorrespondingTile(bool[] neighbors) {
     if (neighbors.SequenceEqual(new bool[] { false, true, true, true })) { return Tiles.BorderTop; }
     else if (neighbors.SequenceEqual(new bool[] { true, false, true, true})) { return Tiles.BorderRight; }
     else if (neighbors.SequenceEqual(new bool[] { true, true, false, true})) { return Tiles.BorderBottom; }
@@ -75,10 +77,10 @@ public class Room : MonoBehaviour {
   }
 
   // Cleaners
-  public void destroyRoom() { Destroy(this.gameObject); }
+  public void DestroyRoom() { Destroy(this.gameObject); }
 
   // Generation
-  public void generateRoom() {
+  public void GenerateRoom() {
     HashSet<Vector2Int> positions = new HashSet<Vector2Int>();
     var currentPosition = startPosition;
 
@@ -100,17 +102,23 @@ public class Room : MonoBehaviour {
     Vector2 size = new Vector2(positions.Max(x => x.x) - positions.Min(x => x.x) + 1,
                                positions.Max(x => x.y) - positions.Min(x => x.y) + 1);
 
-    var tileset = getTileset();
-    foreach (var position in positions) {
-      var neighbors = getTileNeighbors(position, positions);
-      var tile = getCorrespondingTile(neighbors);
+    var tileset = GetTileset();
 
-      var newTile = PrefabUtility.InstantiatePrefab(Tileset.getTile(tileset, tile)) as GameObject;
+    // Instantiate main body of the room.
+    foreach (var position in positions) {
+      var neighbors = GetTileNeighbors(position, positions);
+      var tile = GetCorrespondingTile(neighbors);
+
+      var newTile = PrefabUtility.InstantiatePrefab(Tileset.GetTile(tileset, tile)) as GameObject;
       newTile.transform.SetParent(transform);
       newTile.transform.localPosition = new Vector3((position[0] - position[1]) * offset.x,
                                                    -(position[0] + position[1]) * offset.y,
                                                    -(position[0] + position[1]) / (size.x + size.y));
       newTile.name += " (" + position[0] + ", " + position[1] + ")";
     }
+
+    // Instantiate entrances.
+    var roomNeighbors = 0;
+
   }
 }

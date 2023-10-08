@@ -54,7 +54,7 @@ public class Tileset : MonoBehaviour {
     for (int i = 0; i < tilesetValues.Length; i++) {
         // Load all the GameObjects in the tileset folder
         GameObject[] loadedTiles = Resources.LoadAll<GameObject>("Tilesets/" + tilesetValues[i].ToString());
-
+ 
         // Initialize the tileset array
         tilesets[i] = new GameObject[loadedTiles.Length];
 
@@ -64,7 +64,7 @@ public class Tileset : MonoBehaviour {
     }
   }
 
-  public static GameObject getTile(Tilesets tileset, Tiles tileType) {
+  public static GameObject GetTile(Tilesets tileset, Tiles tileType) {
     if (instance != null && (int)tileType < instance.tilesets[(int)tileset].Length) {
       return instance.tilesets[(int)tileset][(int)tileType];
     }

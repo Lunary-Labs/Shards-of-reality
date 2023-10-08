@@ -17,23 +17,23 @@ public class Abyss : MonoBehaviour {
     }
 
     Random.InitState(this.seed);
-    generateAbyss();
+    GenerateAbyss();
   }
 
   // Getters / Setters
-  public int getFloorAmount() { return this.floorAmount; }
-  public List<Floor> getFloors() { return this.floors; }
-  public int getSeed() { return this.seed; }
+  public int GetFloorAmount() { return this.floorAmount; }
+  public List<Floor> GetFloors() { return this.floors; }
+  public int GetSeed() { return this.seed; }
 
-  public void setFloorAmount(int floorAmount) { this.floorAmount = floorAmount; }
-  public void setFloors(List<Floor> floors) { this.floors = floors; }
-  public void setSeed(int seed) { this.seed = seed; }
+  public void SetFloorAmount(int floorAmount) { this.floorAmount = floorAmount; }
+  public void SetFloors(List<Floor> floors) { this.floors = floors; }
+  public void SetSeed(int seed) { this.seed = seed; }
 
   // Cleaners
-  public void destroyAbyss() { Destroy(this.gameObject); }
+  public void DestroyAbyss() { Destroy(this.gameObject); }
 
   // Generation
-  public void generateAbyss() {
+  public void GenerateAbyss() {
     for(int i = 1; i <= this.floorAmount; i++) {
       GameObject newFloor = new GameObject("Floor " + i);
       newFloor.transform.parent = this.transform;
@@ -41,7 +41,7 @@ public class Abyss : MonoBehaviour {
       Floor floor = newFloor.AddComponent<Floor>();
       floor.Initialize(i, "Floor " + i);
       this.floors.Add(floor);
-      floor.generateFloor();
+      floor.GenerateFloor();
     }
   }
 }
