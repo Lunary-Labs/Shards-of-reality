@@ -12,13 +12,13 @@ public class Floor2 : MonoBehaviour {
   // Generation variables
   private Vector2Int startPosition = Vector2Int.zero;
   private int walkLenght = 12;
-  private Vector2Int distanceBetweenRooms = new Vector2Int(2, 1);
-  private Vector2Int offset = new Vector2Int(25, -25);
+  private Vector2 offset = new Vector2(2.0f, 1.0f);
   private bool startRandomly = true;
 
-  void Start() {
-    this.floorId = 1; // TODO: Not hardcode this.
-    GenerateFloor();
+  // Constructors
+  public void Initialize(int floorId, string floorName) {
+    this.floorId = floorId;
+    this.floorName = floorName;
   }
 
   public void GenerateFloor() {
@@ -44,29 +44,79 @@ public class Floor2 : MonoBehaviour {
       }
     }
 
+    List<Vector2Int> tempPositions = new List<Vector2Int>(positions);
+
+    // Determine special rooms positions.
+    var max = 0;
+    var spawnRoomPosition = new Vector2Int();
+    foreach(var position in positions) {
+      var neighborsAmount = GetNeighborsAmount(position, positions);
+      if(neighborsAmount > max) {
+        max = neighborsAmount;
+        spawnRoomPosition = position;
+      }
+    }
+
+    // Find the most distant room from the spawn room that have only one neighbor.
+    List<Vector2Int> oneNeighborPositions = new List<Vector2Int>();
+    foreach(var position in positions) {
+      if(GetNeighborsAmount(position, positions) == 1) {
+        oneNeighborPositions.Add(position);
+      }
+    }
+
+    var maxDistance = 0;
+    var bossRoomPosition = new Vector2Int();
+    foreach(var position in oneNeighborPositions) {
+      var distance = Mathf.Abs(position.x - spawnRoomPosition.x) + Mathf.Abs(position.y - spawnRoomPosition.y);
+      if(distance > maxDistance) {
+        maxDistance = distance;
+        bossRoomPosition = position;
+      }
+    }
+
+    tempPositions.Remove(spawnRoomPosition);
+    tempPositions.Remove(bossRoomPosition);
+
+    // Place treasure room and shop on a random leftover room.
+    var treasureRoomPosition = tempPositions[Random.Range(0, tempPositions.Count)];
+    tempPositions.Remove(treasureRoomPosition);
+    var shopRoomPosition = tempPositions[Random.Range(0, tempPositions.Count)];
+    tempPositions.Remove(shopRoomPosition);
+
     // Create rooms.
     foreach (var position in positions) {
       var neighborsAmount = GetNeighborsAmount(position, positions);
       var neighbors = GetPositionNeighbors(position, positions);
-      // instantiate a random room based on the amount of neighbors.
       GameObject[] possibleRooms = Resources.LoadAll<GameObject>("Prefabs/Rooms/" + neighborsAmount);
-      // Find all rooms that have corresponding neigbors directions.
       List<GameObject> validRooms = new List<GameObject>();
-
-      // TODO: fix this check to goes out of bound sometimes.
       foreach(var r in possibleRooms) {
-        if (neighbors.SequenceEqual(r.GetComponent<Room2>().getNeighbors())) {
+        if (neighbors.SequenceEqual(r.GetComponent<Room2>().GetNeighbors())) {
           validRooms.Add(r);
         }
       }
 
-      // Instantiate a random room from the valid rooms.
+      // Instantiate a random room from the valid rooms list.
       GameObject roomPrefab = validRooms[Random.Range(0, validRooms.Count)];
-      var room = Instantiate(roomPrefab, new Vector3(position.x * distanceBetweenRooms[0] + offset.x, position.y * distanceBetweenRooms[1] + offset.y, 0), Quaternion.identity);
+      var room = Instantiate(roomPrefab);
       room.transform.parent = this.transform;
-      room.name = "Room " + position.x + " " + position.y;
+      room.transform.localPosition = new Vector3((position[0] - position[1]) * offset[0],
+                                                -(position[0] + position[1])  * offset[1],
+                                                0);
+      string roomType = "";
+      if(position == treasureRoomPosition) {
+        roomType = "treasure";
+      } else if(position == shopRoomPosition) {
+        roomType = "shop";
+      } else if(position == bossRoomPosition) {
+        roomType = "boss";
+      } else if(position == spawnRoomPosition) {
+        roomType = "spawn";
+      } else {
+        roomType = "basic";
+      }
+      room.GetComponent<Room2>().Initialize(roomType, position);
     }
-
   }
 
   private bool[] GetPositionNeighbors(Vector2Int position, HashSet<Vector2Int> positions) {
@@ -89,6 +139,8 @@ public class Floor2 : MonoBehaviour {
   }
 
   private int GetRoomsAmount() {
-    return this.floorId * 3 + 8;
+    double baseRooms = this.floorId * 4 + 8;
+    double adjustedRooms = baseRooms - Mathf.Log(this.floorId + 1);
+    return (int)adjustedRooms;
   }
 }
