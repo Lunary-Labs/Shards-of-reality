@@ -17,11 +17,11 @@ public static class Direction2D {
     new Vector2Int(-1, 0)   // West
   };
 
-  public static Vector2Int getRandomCardinalDirection() {
+  public static Vector2Int GetRandomCardinalDirection() {
     return cardinalDirectionInt[Random.Range(0, cardinalDirectionInt.Count)];
   }
 
-  public static Vector2Int getCardinalDirection(Directions direction) {
+  public static Vector2Int GetCardinalDirection(Directions direction) {
     return cardinalDirectionInt[(int)direction];
   }
 }

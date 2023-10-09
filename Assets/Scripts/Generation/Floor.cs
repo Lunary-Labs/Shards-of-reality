@@ -47,7 +47,7 @@ public class Floor : MonoBehaviour {
       path.Add(startPosition);
       currentPosition = startPosition;
       for (int j = 0; j < walkLenght; j++) {
-        var newPosition = currentPosition + Direction2D.getRandomCardinalDirection();
+        var newPosition = currentPosition + Direction2D.GetRandomCardinalDirection();
         path.Add(newPosition);
         currentPosition = newPosition;
         positions.UnionWith(path);

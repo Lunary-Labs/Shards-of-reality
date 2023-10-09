@@ -51,10 +51,10 @@ public class Room : MonoBehaviour {
 
   public bool[] GetTileNeighbors(Vector2Int position, HashSet<Vector2Int> positions) {
     bool[] neighbors = new bool[4];
-    neighbors[(int)Directions.North] = positions.Contains(position + Direction2D.getCardinalDirection(Directions.North));
-    neighbors[(int)Directions.East] = positions.Contains(position + Direction2D.getCardinalDirection(Directions.East));
-    neighbors[(int)Directions.South] = positions.Contains(position + Direction2D.getCardinalDirection(Directions.South));
-    neighbors[(int)Directions.West] = positions.Contains(position + Direction2D.getCardinalDirection(Directions.West));
+    neighbors[(int)Directions.North] = positions.Contains(position + Direction2D.GetCardinalDirection(Directions.North));
+    neighbors[(int)Directions.East] = positions.Contains(position + Direction2D.GetCardinalDirection(Directions.East));
+    neighbors[(int)Directions.South] = positions.Contains(position + Direction2D.GetCardinalDirection(Directions.South));
+    neighbors[(int)Directions.West] = positions.Contains(position + Direction2D.GetCardinalDirection(Directions.West));
     return neighbors;
   }
 
@@ -89,7 +89,7 @@ public class Room : MonoBehaviour {
       path.Add(startPosition);
       var previousPosition = startPosition;
       for (int j = 0; j < walkLenght; j++) {
-        var newPosition = previousPosition + Direction2D.getRandomCardinalDirection();
+        var newPosition = previousPosition + Direction2D.GetRandomCardinalDirection();
         path.Add(newPosition);
         previousPosition = newPosition;
       }
@@ -116,9 +116,5 @@ public class Room : MonoBehaviour {
                                                    -(position[0] + position[1]) / (size.x + size.y));
       newTile.name += " (" + position[0] + ", " + position[1] + ")";
     }
-
-    // Instantiate entrances.
-    var roomNeighbors = 0;
-
   }
 }
