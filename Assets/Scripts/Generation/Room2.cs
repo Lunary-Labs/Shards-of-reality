@@ -16,6 +16,7 @@ public class Room2 : MonoBehaviour {
   private Room2 southNeighbor;
   private Room2 westNeighbor;
 
+  // Constructor
   public void Initialize(string roomType, Vector2Int position) {
     this.roomType = roomType;
     this.position = position;
@@ -33,6 +34,7 @@ public class Room2 : MonoBehaviour {
     }
   }
 
+  // Getters / Setters
   public bool North {
     get { return north; }
     set { north = value; }
