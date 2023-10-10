@@ -45,6 +45,11 @@ public class ItemEffect : MonoBehaviour {
 // dans des jeux comme isaac, la quasi totalité des items ont des synergies et des effets qui se cumulent.
 // certaines sont harcodées mais on croit que certaines se cumullent toutes seules.
 
+
+// sinon je pensais aussi faire les fonctions d'en dessous, et pour certains effets combinés qui doivent etre hardodés 
+// il faudrait retirer les deux effets et en ajouter un qui les "override"
+
+
   public void skin() {}
 
   public void permanent() {}
