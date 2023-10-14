@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Room2 : MonoBehaviour {
+public class Room : MonoBehaviour {
   [SerializeField] private bool north;
   [SerializeField] private bool east;
   [SerializeField] private bool south;
@@ -11,10 +11,10 @@ public class Room2 : MonoBehaviour {
   private string roomType;
   private Vector2Int position;
 
-  private Room2 northNeighbor;
-  private Room2 eastNeighbor;
-  private Room2 southNeighbor;
-  private Room2 westNeighbor;
+  private Room northNeighbor;
+  private Room eastNeighbor;
+  private Room southNeighbor;
+  private Room westNeighbor;
 
   // Constructor
   public void Initialize(string roomType, Vector2Int position) {
@@ -31,6 +31,10 @@ public class Room2 : MonoBehaviour {
       GetComponent<SpriteRenderer>().color = Color.yellow;
     } else if (roomType == "shop") {
       GetComponent<SpriteRenderer>().color = Color.blue;
+    } else if (roomType == "blessing") {
+      GetComponent<SpriteRenderer>().color = Color.cyan;
+    } else if (roomType == "malediction") {
+      GetComponent<SpriteRenderer>().color = Color.magenta;
     }
   }
 

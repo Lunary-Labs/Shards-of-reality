@@ -3,22 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Floor2 : MonoBehaviour {
+public class Floor : MonoBehaviour {
   // Floor variables
   private int floorId;
   private string floorName;
-  private List<Room2> Rooms = new List<Room2>();
+  private List<Room> Rooms = new List<Room>();
 
   // Generation variables
   private Vector2Int startPosition = Vector2Int.zero;
   private int walkLenght = 12;
   private Vector2 offset = new Vector2(2.0f, 1.0f);
   private bool startRandomly = true;
+  private bool hasSpecialItemRoom;
+  private string specialItemRoomType;
 
   // Constructors
   public void Initialize(int floorId, string floorName) {
     this.floorId = floorId;
     this.floorName = floorName;
+    this.hasSpecialItemRoom = UnityEngine.Random.value < 0.5f; // Must depend on player luck and special room chances.
+    this.specialItemRoomType = (UnityEngine.Random.value < 0.5f) ? "blessing" : "malediction";  // Must depend on player luck and special room chances.
   }
 
   public void GenerateFloor() {
@@ -56,6 +60,7 @@ public class Floor2 : MonoBehaviour {
         spawnRoomPosition = position;
       }
     }
+    tempPositions.Remove(spawnRoomPosition);
 
     // Find the most distant room from the spawn room that have only one neighbor.
     List<Vector2Int> oneNeighborPositions = new List<Vector2Int>();
@@ -74,15 +79,19 @@ public class Floor2 : MonoBehaviour {
         bossRoomPosition = position;
       }
     }
-
-    tempPositions.Remove(spawnRoomPosition);
     tempPositions.Remove(bossRoomPosition);
 
-    // Place treasure room and shop on a random leftover room.
+    // Place special roooms.
+    // TODO: Place them only on 1 neighboor rooms once generation is fixed.
     var treasureRoomPosition = tempPositions[Random.Range(0, tempPositions.Count)];
     tempPositions.Remove(treasureRoomPosition);
     var shopRoomPosition = tempPositions[Random.Range(0, tempPositions.Count)];
     tempPositions.Remove(shopRoomPosition);
+    var specialItemRoomPosition = new Vector2Int();
+    if (this.hasSpecialItemRoom) {
+      specialItemRoomPosition = tempPositions[Random.Range(0, tempPositions.Count)];
+      tempPositions.Remove(specialItemRoomPosition);
+    }
 
     // Create rooms.
     foreach (var position in positions) {
@@ -91,7 +100,7 @@ public class Floor2 : MonoBehaviour {
       GameObject[] possibleRooms = Resources.LoadAll<GameObject>("Prefabs/Rooms/" + neighborsAmount);
       List<GameObject> validRooms = new List<GameObject>();
       foreach(var r in possibleRooms) {
-        if (neighbors.SequenceEqual(r.GetComponent<Room2>().GetNeighbors())) {
+        if (neighbors.SequenceEqual(r.GetComponent<Room>().GetNeighbors())) {
           validRooms.Add(r);
         }
       }
@@ -112,10 +121,12 @@ public class Floor2 : MonoBehaviour {
         roomType = "boss";
       } else if(position == spawnRoomPosition) {
         roomType = "spawn";
+      } else if(position == specialItemRoomPosition) {
+        roomType = specialItemRoomType;
       } else {
         roomType = "basic";
       }
-      room.GetComponent<Room2>().Initialize(roomType, position);
+      room.GetComponent<Room>().Initialize(roomType, position);
     }
   }
 

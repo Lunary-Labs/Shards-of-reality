@@ -2,32 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Item : MonoBehaviour {
+public class Item : ItemEffect {
   // Item properties
   private int id;
   private string itemName;
+  private int quality;
   private string pool;
   private string description;
-  private ItemEffect effect;
 
   // Getters/Setters
-  public int Id {
-    get { return id; }
-    set { id = value; }
-  }
-
-  public string Name {
-    get { return name; }
-    set { name = value; }
-  }
-
-  public string Pool {
-    get { return pool; }
-    set { pool = value; }
-  }
-
-  public string Description {
-    get { return description; }
-    set { description = value; }
-  }
+  public int GetId() { return id; }
+  public string GetName() { return itemName; }
+  public int GetQuality() { return quality; }
+  public string GetPool() { return pool; }
+  public string GetDescription() { return description; }
 }

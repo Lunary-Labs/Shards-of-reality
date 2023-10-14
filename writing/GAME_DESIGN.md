@@ -66,4 +66,5 @@ It has a chance to contain a lore item, that tells the player more about the bea
 This path is different on the 6th level, it contain an alternative exit that lead the player to a hard challenge.  
 The player can choose a reward from the ancient artifact pool after beating the challenge.
 
-
+# Special rooms:
+  Idea: Room that contains an enigma, for example a key and a chest / door, or a puzzle to solve.  
