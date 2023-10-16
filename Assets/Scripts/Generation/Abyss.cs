@@ -8,7 +8,7 @@ public class Abyss : MonoBehaviour {
   private List<Floor> floors = new List<Floor>();
 
   // Generation variables
-  private int seed = -1;
+  private int seed = 10;
   private int offsetBetweenFloors = 75;
 
   void Start() {
@@ -22,8 +22,10 @@ public class Abyss : MonoBehaviour {
 
   void Update() {
     if(Input.GetKeyDown(KeyCode.R)) {
-      RandomizeSeed();
+      Debug.Log("Regenerating Abyss.");
       CleanAbyss();
+      RandomizeSeed();
+      Random.InitState(this.seed);
       GenerateAbyss();
     }
   }
