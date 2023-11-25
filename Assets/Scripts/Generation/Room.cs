@@ -21,21 +21,6 @@ public class Room : MonoBehaviour {
     this.roomType = roomType;
     this.position = position;
     this.transform.name = roomType + " " + position.x + ", " + position.y;
-
-    // temp for visual debugging.
-    if (roomType == "spawn") {
-      GetComponent<SpriteRenderer>().color = Color.green;
-    } else if (roomType == "boss") {
-      GetComponent<SpriteRenderer>().color = Color.red;
-    } else if (roomType == "treasure") {
-      GetComponent<SpriteRenderer>().color = Color.yellow;
-    } else if (roomType == "shop") {
-      GetComponent<SpriteRenderer>().color = Color.blue;
-    } else if (roomType == "blessing") {
-      GetComponent<SpriteRenderer>().color = Color.cyan;
-    } else if (roomType == "malediction") {
-      GetComponent<SpriteRenderer>().color = Color.magenta;
-    }
   }
 
   // Getters / Setters

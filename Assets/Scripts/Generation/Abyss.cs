@@ -5,10 +5,10 @@ using UnityEngine;
 public class Abyss : MonoBehaviour {
   // Abyss variables
   private int floorAmount = 7;
-  private List<Floor> floors = new List<Floor>();
+  private List<GameObject> floors = new List<GameObject>();
 
   // Generation variables
-  private int seed = 10;
+  private int seed = -1;
   private int offsetBetweenFloors = 75;
 
   void Start() {
@@ -32,20 +32,20 @@ public class Abyss : MonoBehaviour {
 
   // Getters / Setters
   public int GetFloorAmount() { return this.floorAmount; }
-  public List<Floor> GetFloors() { return this.floors; }
-  public Floor GetFloor(int index) { return this.floors[index]; }
+  public List<GameObject> GetFloors() { return this.floors; }
+  public GameObject GetFloor(int index) { return this.floors[index]; }
   public int GetSeed() { return this.seed; }
 
   public void SetFloorAmount(int floorAmount) { this.floorAmount = floorAmount; }
-  public void SetFloors(List<Floor> floors) { this.floors = floors; }
-  public void SetFloor(int index, Floor floor) { this.floors[index] = floor; }
+  public void SetFloors(List<GameObject> floors) { this.floors = floors; }
+  public void SetFloor(int index, GameObject floor) { this.floors[index] = floor; }
   public void SetSeed(int seed) { this.seed = seed; }
 
   // Cleaners
   public void DestroyAbyss() { Destroy(this.gameObject); }
   public void CleanAbyss() {
     foreach(Transform child in this.transform) { Destroy(child.gameObject); }
-    foreach(Floor floor in this.floors) { UnityEngine.Object.Destroy(floor.gameObject); }
+    floors = new List<GameObject>();
   }
 
   public void RandomizeSeed() {
@@ -62,7 +62,7 @@ public class Abyss : MonoBehaviour {
       newFloor.transform.localPosition = new Vector3(offsetBetweenFloors * (i - 1), 0, 0);
       Floor floor = newFloor.AddComponent<Floor>();
       floor.Initialize(i, "Floor " + i);
-      this.floors.Add(floor);
+      this.floors.Add(newFloor);
       floor.GenerateFloor();
     }
   }

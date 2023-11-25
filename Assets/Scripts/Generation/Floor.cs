@@ -7,7 +7,8 @@ public class Floor : MonoBehaviour {
   // Floor variables
   private int floorId;
   private string floorName;
-  private List<Room> Rooms = new List<Room>();
+  [SerializeField]
+  private List<GameObject> rooms = new List<GameObject>();
 
   // Generation variables
   private Vector2Int startPosition = Vector2Int.zero;
@@ -126,6 +127,7 @@ public class Floor : MonoBehaviour {
       } else {
         roomType = "basic";
       }
+      rooms.Add(room);
       room.GetComponent<Room>().Initialize(roomType, position);
     }
   }
