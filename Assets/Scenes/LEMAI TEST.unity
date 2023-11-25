@@ -169,7 +169,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1dd9a0f3cffd2394e91c965c94b2f155, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveSpeed: 2
 --- !u!95 &486092315
 Animator:
   serializedVersion: 5
@@ -179,7 +178,7 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 486092310}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
+  m_Avatar: {fileID: 9000000, guid: c98859e1b5a681a40ba828b8ad6c0d85, type: 3}
   m_Controller: {fileID: 9100000, guid: 1a13d3eb1509fa64692ce74c46305136, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
@@ -580,7 +579,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c98859e1b5a681a40ba828b8ad6c0d85, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.089
+      value: 1.372
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c98859e1b5a681a40ba828b8ad6c0d85, type: 3}
       propertyPath: m_LocalPosition.z
