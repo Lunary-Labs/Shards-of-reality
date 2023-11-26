@@ -27,7 +27,7 @@ public class Floor : MonoBehaviour {
     int deadEndsAmount = 0;
     int roomsAmount = GetRoomsAmount();
     queue.Add(Vector2Int.zero);
-    while (positions.Count < roomsAmount && deadEndsAmount < 5) {
+    while (positions.Count < roomsAmount) {
       var position = queue.ElementAt(Random.Range(0, queue.Count));
       queue.Remove(position);
       positions.Add(position);
@@ -45,7 +45,18 @@ public class Floor : MonoBehaviour {
   }
 
   public void GenerateFloor() {
+    Debug.Log("Generating floor " + this.floorId + " (" + this.floorName + ")");
     HashSet<Vector2Int> positions = GetPositions();
+    int deadEndsAmount = 0;
+    foreach (var position in positions) {
+      if (GetNeighborsAmount(position, positions) == 1) {
+        deadEndsAmount++;
+      }
+    }
+    while (deadEndsAmount < 6) {
+      positions = addDeadEnd(positions);
+      deadEndsAmount++;
+    }
 
     List<Vector2Int> tempPositions = new List<Vector2Int>(positions);
 
@@ -61,35 +72,46 @@ public class Floor : MonoBehaviour {
     }
     tempPositions.Remove(spawnRoomPosition);
 
-    // Find the most distant room from the spawn room that have only one neighbor.
-    List<Vector2Int> oneNeighborPositions = new List<Vector2Int>();
-    foreach(var position in positions) {
-      if(GetNeighborsAmount(position, positions) == 1 || GetNeighborsAmount(position, positions) == 2) {
-        oneNeighborPositions.Add(position);
+    // Two foreach so the first rooms of the list are 1 neighbors (priority) and the last are 2 neighbors (less priority
+    List<Vector2Int> specialPossiblePosition = new List<Vector2Int>();
+    foreach(var position in tempPositions) {
+      if(GetNeighborsAmount(position, positions) == 1) {
+        specialPossiblePosition.Add(position);
+      }
+    }
+
+    foreach(var position in tempPositions) {
+      if (GetNeighborsAmount(position, positions) == 2) {
+        // add if the room doesn't have north souht or east west neighbors
+        var neighbors = GetPositionNeighbors(position, positions);
+        if(neighbors[(int)Directions.North] != neighbors[(int)Directions.South] && neighbors[(int)Directions.East] != neighbors[(int)Directions.West]) {
+          specialPossiblePosition.Add(position);
+        }
       }
     }
 
     // Determine boss room position.
+    // Find the most distant room from the spawn room that have only one neighbor.
     var maxDistance = 0;
     var bossRoomPosition = new Vector2Int();
-    foreach(var position in oneNeighborPositions) {
+    foreach(var position in specialPossiblePosition) {
       var distance = Mathf.Abs(position.x - spawnRoomPosition.x) + Mathf.Abs(position.y - spawnRoomPosition.y);
-      if(distance > maxDistance) {
+      if(distance > maxDistance && GetNeighborsAmount(position, positions) == 1) {
         maxDistance = distance;
         bossRoomPosition = position;
       }
     }
-    oneNeighborPositions.Remove(bossRoomPosition);
+    specialPossiblePosition.Remove(bossRoomPosition);
 
     // Determine special rooms positions.
-    var treasureRoomPosition = oneNeighborPositions[Random.Range(0, oneNeighborPositions.Count)];
-    oneNeighborPositions.Remove(treasureRoomPosition);
-    var shopRoomPosition = oneNeighborPositions[Random.Range(0, oneNeighborPositions.Count)];
-    oneNeighborPositions.Remove(shopRoomPosition);
-    var maledictionRoomPosition = oneNeighborPositions[Random.Range(0, oneNeighborPositions.Count)];
-    oneNeighborPositions.Remove(maledictionRoomPosition);
-    var blessingRoomPosition = oneNeighborPositions[Random.Range(0, oneNeighborPositions.Count)];
-    oneNeighborPositions.Remove(blessingRoomPosition);
+    var maledictionRoomPosition = specialPossiblePosition[0];
+    specialPossiblePosition.Remove(maledictionRoomPosition);
+    var blessingRoomPosition = specialPossiblePosition[0];
+    specialPossiblePosition.Remove(blessingRoomPosition);
+    var treasureRoomPosition = specialPossiblePosition[0];
+    specialPossiblePosition.Remove(treasureRoomPosition);
+    var shopRoomPosition = specialPossiblePosition[0];
+    specialPossiblePosition.Remove(shopRoomPosition);
 
     // Create rooms.
     foreach (var position in positions) {
@@ -122,6 +144,9 @@ public class Floor : MonoBehaviour {
         }
       }
 
+      // TODO: Remove this debug log.
+      Debug.Log(roomType + neighborsAmount);
+
       // Instantiate a random room from the valid rooms list.
       GameObject roomPrefab = validRooms[Random.Range(0, validRooms.Count)];
       var room = Instantiate(roomPrefab);
@@ -135,6 +160,27 @@ public class Floor : MonoBehaviour {
       rooms.Add(room);
       room.GetComponent<Room>().Initialize(roomType, position);
     }
+  }
+
+  private HashSet<Vector2Int> addDeadEnd(HashSet<Vector2Int> positions) {
+    Debug.Log("Adding dead end");
+    bool added = false;
+    foreach (var position in GetPositions()) {
+      if (added) { break; }
+      if (GetNeighborsAmount(position, positions) == 4) {
+        continue;
+      } else {
+        // test each neighbor, if this neighbor would have 1 neighbor, add it to the list
+        foreach (var direction in Direction2D.cardinalDirectionInt) {
+          if (GetNeighborsAmount(position + direction, positions) == 1) {
+            positions.Add(position + direction);
+            added = true;
+            break;
+          }
+        }
+      }
+    }
+    return positions;
   }
 
   private bool[] GetPositionNeighbors(Vector2Int position, HashSet<Vector2Int> positions) {
