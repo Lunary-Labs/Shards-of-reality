@@ -169,6 +169,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1dd9a0f3cffd2394e91c965c94b2f155, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainCamera: {fileID: 737519199}
+  projectilePrefab: {fileID: 4687985027226916208, guid: 349b359ccb2e04c41a2fcf688ae6f366, type: 3}
+  projectileSpeed: 10
 --- !u!95 &486092315
 Animator:
   serializedVersion: 5
@@ -382,7 +385,7 @@ GameObject:
   - component: {fileID: 1446997774}
   - component: {fileID: 1446997773}
   - component: {fileID: 1446997772}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
