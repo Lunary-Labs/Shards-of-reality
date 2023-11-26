@@ -18,9 +18,6 @@ public class PlayerController : MonoBehaviour {
     private float dashDuration = 2f;
     private bool isDashing = false;
 
-    //Clock 
-    private float dashCd = 1.5f;
-    private float dashCdTimer;
 
     private float MoveSpeed = 7;
     private float angleOffset = 45f;
@@ -28,6 +25,7 @@ public class PlayerController : MonoBehaviour {
     //Shoot
     private float projectileSpeed = 10f;
     private float projectileHeight = 1f;
+    
 
 
     void Start() {
@@ -38,15 +36,24 @@ public class PlayerController : MonoBehaviour {
     }
 
     void Update() {
-        //movement
-        float horInput = Input.GetAxisRaw("Horizontal");
-        float verInput = Input.GetAxisRaw("Vertical");
-        Vector3 inputDirection = Quaternion.Euler(0, angleOffset, 0) * new Vector3(horInput, 0, verInput);
-        inputDirection.Normalize(); 
-        if (inputDirection != Vector3.zero) {
-            transform.forward = inputDirection;
+        //movement right stick/keyboard
+        float leftHorInput = Input.GetAxisRaw("Horizontal");
+        float leftVerInput = Input.GetAxisRaw("Vertical");
+        Vector3 leftInputDirection = Quaternion.Euler(0, angleOffset, 0) * new Vector3(leftHorInput, 0, leftVerInput);
+        leftInputDirection.Normalize(); 
+        if (leftInputDirection != Vector3.zero) {
+            transform.forward = leftInputDirection;
         }
-        rb.velocity = inputDirection * MoveSpeed;
+        rb.velocity = leftInputDirection * MoveSpeed;
+
+        //Get right stick input on controller
+        float rightHorInput = Input.GetAxis("Right Stick Horizontal");
+        float rightVerInput = Input.GetAxis("Right Stick Vertical");
+        Vector3 rightInputdirection = Quaternion.Euler(0, angleOffset, 0) * new Vector3(rightHorInput, 0, rightVerInput);
+
+        if(rightInputdirection != new Vector3(0,0,0)) {
+            stickShoot(rightInputdirection);
+        }
 
         //Handle animation bool 
         if(rb.velocity == new Vector3(0, 0, 0)) {
@@ -101,6 +108,14 @@ public class PlayerController : MonoBehaviour {
         projectileRb.AddForce(direction.normalized * projectileSpeed, ForceMode.Impulse);
 
         Destroy(projectile, 5f);
+    }
+
+    private void stickShoot(Vector3 direction) {
+        Vector3 instantiatePosition = transform.position + Vector3.up * projectileHeight;
+        GameObject projectile = Instantiate(projectilePrefab, instantiatePosition, Quaternion.identity);
+        projectile.transform.forward = direction.normalized;
+        Rigidbody projectileRb = projectile.GetComponent<Rigidbody>();
+        projectileRb.AddForce(direction.normalized * projectileSpeed, ForceMode.Impulse);
     }
 }
 
