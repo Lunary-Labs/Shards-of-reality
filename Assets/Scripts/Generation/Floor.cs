@@ -24,38 +24,28 @@ public class Floor : MonoBehaviour {
   public HashSet<Vector2Int> GetPositions() {
     HashSet<Vector2Int> positions = new HashSet<Vector2Int>();
     HashSet<Vector2Int> queue = new HashSet<Vector2Int>();
-    int deadEndsAmount = 0;
     int roomsAmount = GetRoomsAmount();
     queue.Add(Vector2Int.zero);
     while (positions.Count < roomsAmount) {
       var position = queue.ElementAt(Random.Range(0, queue.Count));
       queue.Remove(position);
       positions.Add(position);
-      bool deadEnd = true;
       foreach (var direction in Direction2D.cardinalDirectionInt) {
         var newPosition = position + direction;
         if (!positions.Contains(newPosition) && GetNeighborsAmount(newPosition, positions) < 2) {
           queue.Add(newPosition);
-          deadEnd = false;
         }
       }
-      if (deadEnd) { deadEndsAmount++; }
     }
     return positions;
   }
 
   public void GenerateFloor() {
-    Debug.Log("Generating floor " + this.floorId + " (" + this.floorName + ")");
     HashSet<Vector2Int> positions = GetPositions();
-    int deadEndsAmount = 0;
-    foreach (var position in positions) {
-      if (GetNeighborsAmount(position, positions) == 1) {
-        deadEndsAmount++;
-      }
-    }
-    while (deadEndsAmount < 6) {
-      positions = addDeadEnd(positions);
-      deadEndsAmount++;
+
+    HashSet<Vector2Int> bannedPositions = new HashSet<Vector2Int>();
+    while (getDeadEndsAmount(positions) < 5) {
+      (positions, bannedPositions) = addDeadEnd(positions, bannedPositions);
     }
 
     List<Vector2Int> tempPositions = new List<Vector2Int>(positions);
@@ -144,9 +134,6 @@ public class Floor : MonoBehaviour {
         }
       }
 
-      // TODO: Remove this debug log.
-      Debug.Log(roomType + neighborsAmount);
-
       // Instantiate a random room from the valid rooms list.
       GameObject roomPrefab = validRooms[Random.Range(0, validRooms.Count)];
       var room = Instantiate(roomPrefab);
@@ -162,8 +149,17 @@ public class Floor : MonoBehaviour {
     }
   }
 
-  private HashSet<Vector2Int> addDeadEnd(HashSet<Vector2Int> positions) {
-    Debug.Log("Adding dead end");
+  private int getDeadEndsAmount(HashSet<Vector2Int> positions) {
+    int deadEndsAmount = 0;
+    foreach (var position in positions) {
+      if (GetNeighborsAmount(position, positions) == 1) {
+        deadEndsAmount++;
+      }
+    }
+    return deadEndsAmount;
+  }
+
+  private (HashSet<Vector2Int>, HashSet<Vector2Int>) addDeadEnd(HashSet<Vector2Int> positions, HashSet<Vector2Int> bannedPositions) {
     bool added = false;
     foreach (var position in GetPositions()) {
       if (added) { break; }
@@ -172,15 +168,17 @@ public class Floor : MonoBehaviour {
       } else {
         // test each neighbor, if this neighbor would have 1 neighbor, add it to the list
         foreach (var direction in Direction2D.cardinalDirectionInt) {
+          if (bannedPositions.Contains(position + direction)) { continue; }
           if (GetNeighborsAmount(position + direction, positions) == 1) {
             positions.Add(position + direction);
+            bannedPositions.Add(position + direction);
             added = true;
             break;
           }
         }
       }
     }
-    return positions;
+    return (positions, bannedPositions);
   }
 
   private bool[] GetPositionNeighbors(Vector2Int position, HashSet<Vector2Int> positions) {
@@ -203,7 +201,7 @@ public class Floor : MonoBehaviour {
   }
 
   private int GetRoomsAmount() {
-    double baseRooms = this.floorId * 4 + 8;
+    double baseRooms = this.floorId * 3 + 8;
     double adjustedRooms = baseRooms - Mathf.Log(this.floorId + 1);
     return (int)adjustedRooms;
   }
