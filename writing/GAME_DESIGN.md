@@ -25,7 +25,6 @@ The player can be cursed if it takes too much hits from a guardian.
 Each guardian has a specific malediction that will take effect on the next floor of the abyss.  
 Some items can reduce the effect of theses curses, or even dissipate them, but maledictions can make them more powerful and even add some effects.  
 
-
 ## Rooms
 
 Each room is a 2D grid of tiles rotated by 45 degrees.  
