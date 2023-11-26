@@ -10,6 +10,7 @@ public class Abyss : MonoBehaviour {
   // Generation variables
   private int seed = -1;
   private int offsetBetweenFloors = 75;
+  private float lastTime;
 
   void Start() {
     if(seed == -1) {
